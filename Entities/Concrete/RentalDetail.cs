@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,7 +13,7 @@ namespace Entities.Concrete
     //colorName: string;
     //dailyPrice: number;
     //description:string;
-    public class RentalDetail
+    public class RentalDetail : IDto
     {
         public int CarId { get; set; }
         public int CustomerId { get; set; }

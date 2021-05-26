@@ -115,6 +115,19 @@ namespace Business.Concrete.Managers
             }
             return new SuccessDataResult<List<CarImage>>(DefaultIfImageNull());
         }
+        public IDataResult<List<CarImage>> GetImageByBrandIdAndColorId(int brandId, int colorId)
+        {
+            if (colorId == 0)
+            {
+                return new ErrorDataResult<List<CarImage>>();
+            }
+            var result = _carImageDal.GetImageByBrandIdAndColorId(brandId, colorId);
+            if (result.Count > 0)
+            {
+                return new SuccessDataResult<List<CarImage>>(result);
+            }
+            return new SuccessDataResult<List<CarImage>>(DefaultIfImageNull());
+        }
         public List<CarImage> DefaultIfImageNull()
         {
             //List<CarImage> carImage = _carImageDal.GetAll(c => c.CarId == id);
@@ -125,7 +138,9 @@ namespace Business.Concrete.Managers
             }};
             return result;
         }
-
-        
+        public string DefaultIfImagePath()
+        {
+            return @"\DefaultImage.png";
+        }
     }
 }

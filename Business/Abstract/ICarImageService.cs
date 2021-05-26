@@ -17,5 +17,8 @@ namespace Business.Abstract
         IResult Delete(CarImage carImage);
         IDataResult<List<CarImage>> GetImageByBrandId(int brandId);
         IDataResult<List<CarImage>> GetImageByColorId(int colorId);
+        IDataResult<List<CarImage>> GetImageByBrandIdAndColorId(int brandId, int colorId);
+        List<CarImage> DefaultIfImageNull();
+        string DefaultIfImagePath();
     }
 }

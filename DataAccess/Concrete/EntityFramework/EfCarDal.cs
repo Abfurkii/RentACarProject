@@ -18,6 +18,7 @@ namespace DataAccess.Concrete.EntityFramework
                 var result = from c in context.Cars
                              join b in context.Brands on c.BrandId equals b.Id
                              join clr in context.Colors on c.ColorId equals clr.Id
+                             join img in context.CarImages on c.Id equals img.CarId
                              select new CarDetail
                              {
                                  CarId = c.Id,
@@ -27,7 +28,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  ColorName = clr.ColorName,
                                  ModelYear = c.ModelYear,
                                  DailyPrice = c.DailyPrice,
-                                 Description = c.Description
+                                 Description = c.Description,
+                                 ImagePath= (from i in context.CarImages where i.CarId == c.Id select i.ImagePath).SingleOrDefault()
                              };
                 return result.ToList();
             }
@@ -50,7 +52,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  ColorName = clr.ColorName,
                                  ModelYear = c.ModelYear,
                                  DailyPrice = c.DailyPrice,
-                                 Description = c.Description
+                                 Description = c.Description,
+                                 ImagePath = (from i in context.CarImages where i.CarId == c.Id select i.ImagePath).SingleOrDefault()
                              };
                 return result.ToList();
             }
@@ -73,7 +76,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  ColorName = clr.ColorName,
                                  ModelYear = c.ModelYear,
                                  DailyPrice = c.DailyPrice,
-                                 Description = c.Description
+                                 Description = c.Description,
+                                 ImagePath=(from i in context.CarImages where i.CarId==c.Id select i.ImagePath).SingleOrDefault()
                              };
                 return result.ToList();
             }
@@ -96,73 +100,12 @@ namespace DataAccess.Concrete.EntityFramework
                                  ColorName = clr.ColorName,
                                  ModelYear = c.ModelYear,
                                  DailyPrice = c.DailyPrice,
-                                 Description = c.Description
+                                 Description = c.Description,
+                                 ImagePath=(from i in context.CarImages where i.CarId==c.Id select i.ImagePath).SingleOrDefault()
                              };
                 return result.ToList();
             }
         }
-
-        public List<CarDetailDto> GetCarDetailsDto()
-        {
-            using (RentCarContext context = new RentCarContext())
-            {
-                var result = from c in context.Cars
-                             join b in context.Brands
-                             on c.BrandId equals b.Id
-                             join clr in context.Colors
-                             on c.ColorId equals clr.Id
-                             select new CarDetailDto
-                             {
-                                 Id = c.Id,
-                                 BrandName = b.BrandName,
-                                 ColorName = clr.ColorName,
-                                 DailyPrice = c.DailyPrice
-                             };
-                return result.ToList();
-            }
-        }
-
-        public List<CarDetailTryDto> GetCarDetailsTryDto()
-        {
-            using (RentCarContext context = new RentCarContext())
-            {
-                var result = from c in context.Cars
-                             join b in context.Brands
-                             on c.BrandId equals b.Id
-                             join clr in context.Colors
-                             on c.ColorId equals clr.Id
-                             select new CarDetailTryDto
-                             {
-                                 Id = c.Id,
-                                 BrandName = b.BrandName,
-                                 ColorName = clr.ColorName
-                             };
-                return result.ToList();
-            }
-        }
-
-        public List<CarDetailIdDto> GetCarDetailsWithIdsDto()
-        {
-            using (RentCarContext context = new RentCarContext())
-            {
-                var result = from c in context.Cars
-                             join b in context.Brands
-                             on c.BrandId equals b.Id
-                             join clr in context.Colors
-                             on c.ColorId equals clr.Id
-                             select new CarDetailIdDto
-                             {
-                                 Id = c.Id,
-                                 BrandName = b.BrandName,
-                                 BrandId = c.BrandId,
-                                 ColorId = c.ColorId,
-                                 ColorName = clr.ColorName,
-                                 DailyPrice = c.DailyPrice
-                             };
-                return result.ToList();
-            }
-        }
-
 
         public List<CarDetail> GetCarsByBrandIdAndColorId(int brandId,int colorId)
         {
@@ -183,7 +126,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  ColorName = clr.ColorName,
                                  ModelYear = c.ModelYear,
                                  DailyPrice = c.DailyPrice,
-                                 Description = c.Description
+                                 Description = c.Description,
+                                 ImagePath=(from i in context.CarImages where i.CarId==c.Id select i.ImagePath).SingleOrDefault()
                              };
                 return result.ToList();
             }

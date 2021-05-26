@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Linq.Expressions;
+using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -23,6 +24,23 @@ namespace DataAccess.Concrete.EntityFramework
                              {
                                  Id = operationClaim.Id,
                                  Name = operationClaim.Name
+                             };
+                return result.ToList();
+            }
+        }
+
+        public List<MemberDto> GetMemberByEmail(string email)
+        {
+            using (RentCarContext context=new RentCarContext())
+            {
+                var result = from m in context.Members
+                             where m.Email == email
+                             select new MemberDto
+                             {
+                                 Id = m.Id,
+                                 Email = m.Email,
+                                 FirstName = m.FirstName,
+                                 LastName = m.LastName
                              };
                 return result.ToList();
             }

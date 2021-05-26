@@ -1,8 +1,11 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -17,6 +20,7 @@ namespace Business.Concrete.Managers
         {
             _memberDal = memberDal;
         }
+        [ValidationAspect(typeof(MemberValidator))]
         public IResult Add(Member member)
         {
             _memberDal.Add(member);
@@ -52,6 +56,16 @@ namespace Business.Concrete.Managers
                 return new ErrorDataResult<List<OperationClaim>>(Messages.NotFound);
             }
             return new SuccessDataResult<List<OperationClaim>>(result, Messages.MemberFound);
+        }
+
+        public IDataResult<MemberDto> GetMemberDtoByEmail(string email)
+        {
+            var result= _memberDal.GetMemberByEmail(email);
+            if (result.Count>0)
+            {
+                return new SuccessDataResult<MemberDto>(result[0]);
+            }
+            return new ErrorDataResult<MemberDto>(Messages.NotFound);
         }
 
         public IResult Update(Member member)

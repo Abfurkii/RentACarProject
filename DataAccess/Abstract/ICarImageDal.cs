@@ -10,5 +10,6 @@ namespace DataAccess.Abstract
     {
         List<CarImage> GetImageByBrandId(int brandId);
         List<CarImage> GetImageByColorId(int colorId);
+        List<CarImage> GetImageByBrandIdAndColorId(int brandId, int colorId);
     }
 }

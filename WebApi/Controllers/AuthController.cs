@@ -31,9 +31,9 @@ namespace WebApi.Controllers
             var result = _authService.CreateAccessToken(registeredMember.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
         [HttpPost("login")]
         public IActionResult Login(MemberForLoginDto memberForLoginDto)
@@ -47,9 +47,9 @@ namespace WebApi.Controllers
             var result = _authService.CreateAccessToken(loginedMember.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
     }
 }

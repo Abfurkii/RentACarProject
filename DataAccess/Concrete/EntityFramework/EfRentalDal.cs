@@ -35,24 +35,5 @@ namespace DataAccess.Concrete.EntityFramework
                 return result.ToList();
             }
         }
-
-        public List<RentalDetailDto> GetRentalDetailDtos()
-        {
-            using (RentCarContext context = new RentCarContext())
-            {
-                var result = from r in context.Rentals
-                             join c in context.Customers on r.CustomerId equals c.Id
-                             join u in context.Users on c.UserId equals u.Id
-                             join car in context.Cars on r.CarId equals car.Id
-                             join b in context.Brands on car.BrandId equals b.Id
-                             select new RentalDetailDto
-                             {
-                                 BrandName = b.BrandName,
-                                 FirstName = u.FirstName,
-                                 LastName = u.LastName
-                             };
-                return result.ToList();
-            }
-        }
     }
 }

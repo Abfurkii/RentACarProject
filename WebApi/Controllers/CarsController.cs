@@ -14,17 +14,9 @@ namespace WebApi.Controllers
     public class CarsController : ControllerBase
     {
         ICarService _carService;
-        ICustomerService _customerService;
-        IBrandService _brandService;
-        IRentalService _rentalService;
-        IUserService _userService;
-        public CarsController(ICarService carService, ICustomerService customerService, IBrandService brandService, IUserService userService,IRentalService rentalService)
+        public CarsController(ICarService carService)
         {
             _carService = carService;
-            _customerService = customerService;
-            _brandService = brandService;
-            _rentalService = rentalService;
-            _userService = userService;
         }
 
         //Cars operations
@@ -32,16 +24,6 @@ namespace WebApi.Controllers
         public IActionResult GetAll()
         {
             var result = _carService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        [HttpGet("getcardetails")]
-        public IActionResult GetCarDetails()
-        {
-            var result = _carService.GetCarDetailDtos();
             if (result.Success)
             {
                 return Ok(result);
@@ -65,17 +47,6 @@ namespace WebApi.Controllers
             if (result.Success)
             {
                 return Ok(result.Message);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet("getcardetailstry")]
-        public IActionResult GetCarDetailsTry()
-        {
-            var result = _carService.GetCarDetailsTryDtos();
-            if (result.Success)
-            {
-                return Ok(result);
             }
             return BadRequest(result);
         }
@@ -145,17 +116,6 @@ namespace WebApi.Controllers
             }
             return BadRequest(result);
         }
-
-        //Customer operations
-
-
-        //Brand operations
-
-
-        //Rental operations
-
-
-        //User operations
 
     }
 }

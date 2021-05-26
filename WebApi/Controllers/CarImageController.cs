@@ -99,5 +99,15 @@ namespace WebApi.Controllers
             }
             return BadRequest(result);
         }
+        [HttpGet("getimagebybrandidandcolorid")]
+        public IActionResult GetImageByBrandIdAndColorId(int brandId,int colorId)
+        {
+            var result = _carImageService.GetImageByBrandIdAndColorId(brandId,colorId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

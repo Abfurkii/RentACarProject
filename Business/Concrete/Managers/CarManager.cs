@@ -23,6 +23,7 @@ namespace Business.Concrete.Managers
     public class CarManager : ICarService
     {
         private ICarDal _carDal;
+        private ICarImageService _carImageService;
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
@@ -47,27 +48,15 @@ namespace Business.Concrete.Managers
         }
 
         [PerformanceAspect(5)]
-        //[SecuredOperation("car.getall,admin")]
+        [SecuredOperation("car.getall,admin")]
         [CacheAspect(60)]
         public IDataResult<List<Car>> GetAll(Expression<Func<Car, bool>> filter = null)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(filter));
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarDetailDtos()
-        {
-            if (DateTime.Now.Hour == 03)
-            {
-                return new ErrorDataResult<List<CarDetailDto>>(Messages.WithoutWork);
-            }
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsDto());
-        }
 
-        public IDataResult<List<CarDetailIdDto>> GetCarDetailsWithIdsDtos()
-        {
-            return new SuccessDataResult<List<CarDetailIdDto>>(_carDal.GetCarDetailsWithIdsDto());
-        }
-
+        [SecuredOperation("car.getall,admin")]
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
             var result = _carDal.GetAll(x => x.BrandId == brandId);
@@ -103,11 +92,6 @@ namespace Business.Concrete.Managers
             return new SuccessResult(Messages.SuccessProcess);
         }
 
-        public IDataResult<List<CarDetailTryDto>> GetCarDetailsTryDtos()
-        {
-            return new SuccessDataResult<List<CarDetailTryDto>>(_carDal.GetCarDetailsTryDto());
-        }
-
         public IDataResult<List<CarDetail>> GetCarDetailsByBrandId(int id)
         {
             var result = _carDal.GetCarDetailsByBrandId(id);
@@ -117,12 +101,13 @@ namespace Business.Concrete.Managers
             }
             return new ErrorDataResult<List<CarDetail>>(Messages.NoData);
         }
-
+        [SecuredOperation("car.getall,admin")]
         public IDataResult<List<CarDetail>> GetAllCarDetails()
         {
             var result = _carDal.GetAllCarDetails();
             if (result.Count>0)
             {
+                CheckImage(result);
                 return new SuccessDataResult<List<CarDetail>>(result);
             }
             return new ErrorDataResult<List<CarDetail>>(Messages.NoData);
@@ -146,6 +131,17 @@ namespace Business.Concrete.Managers
                 return new SuccessDataResult<List<CarDetail>>(result);
             }
             return new ErrorDataResult<List<CarDetail>>(Messages.NoData);
+        }
+        public List<CarDetail> CheckImage(List<CarDetail> carDetails)
+        {
+            for (int i = 0; i < carDetails.Count; i++)
+            {
+                if (carDetails[i].ImagePath == null)
+                {
+                    carDetails[i].ImagePath = _carImageService.DefaultIfImagePath();
+                }
+            }
+            return carDetails;
         }
     }
 }

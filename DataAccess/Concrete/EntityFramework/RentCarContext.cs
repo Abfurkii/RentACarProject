@@ -25,6 +25,8 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Member> Members { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<MemberOperationClaim> MemberOperationClaims { get; set; }
+        public DbSet<CreditCard> CreditCards { get; set; }
+        public DbSet<Payment> Payments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("Users");

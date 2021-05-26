@@ -23,6 +23,18 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
+        public List<CarImage> GetImageByBrandIdAndColorId(int brandId, int colorId)
+        {
+            using (RentCarContext context=new RentCarContext())
+            {
+                var result = from i in context.CarImages
+                             join c in context.Cars on i.CarId equals c.Id
+                             where c.BrandId == brandId && c.ColorId == colorId
+                             select i;
+                return result.ToList();
+            }
+        }
+
         public List<CarImage> GetImageByColorId(int colorId)
         {
             using (RentCarContext context = new RentCarContext())
